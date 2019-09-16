@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head><title>品歌词，歌词搜索，歌词找歌名</title>
+    <style>
+        .part1 div {
+            width: 100px;
+            height: 30px;
+            text-align: center;
+            line-height: 30px;
+            float: left;
+            cursor: pointer;
+        }
+        .part1 {
+            overflow: hidden;
+        }
+        h2 {
+            height: 30px;
+
+        }
+    </style>
+    </head>
+    <body>
+        <h1>欢迎光临！</h1>
+    <div class="part1">
+        <form name="myForm" METHOD=GET>
+        <input  id="button" type="button" value="点击" onclick="buttonClick()">
+            </form>
+    </div>
+    </body>
+
+<script>
+    function buttonClick(){
+            document.myForm.action = "/page"
+    document.myForm.submit();
+        }
+</script>
+</html>
