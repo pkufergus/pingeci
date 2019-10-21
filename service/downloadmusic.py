@@ -93,13 +93,14 @@ class Music():
 class DownloadMusic():
     server = "http://yq01-ps-7-m12-wise080.yq01.baidu.com:8002"
     server = "http://yq01-bdl-bdl126.yq01.baidu.com:8310"
-    root_dir = "/home/work/data/music"
+    # root_dir = "/home/work/data/music"
     def __init__(self):
         self.g_index = 0
         self.thread_num = 0
         self.limit = 100
         self.song_limit = 500
         self.id_map = {}
+        self.root_dir = ""
         self.data_dir = self.root_dir
         #self.load()
         pass
@@ -292,6 +293,8 @@ class DownloadMusic():
 
     def _download_one_song(self, music):
         playlist = music.playlist
+        if not playlist.root_dir:
+            playlist.root_dir = self.root_dir
         music_dir = "{}/{}/{}".format(playlist.root_dir, playlist.id, music.id)
         cmd = "mkdir -p {}".format(music_dir)
         log.info("cmd={}".format(cmd))

@@ -30,6 +30,8 @@ sys.path.append(".")
 from util.util import log
 # reload(sys)
 # sys.path.append("../")
+sys.path.append("..")
+# sys.path.append("/home/test/src/github.com/pingeci")
 from service import downloadmusic
 
 def run():
