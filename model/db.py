@@ -3,6 +3,7 @@ from util.util import log
 import threading
 
 
+
 class Mysql(object):
     def __init__(self,host,port,user,passwd,db,charset='utf8'):
         try:
@@ -53,3 +54,5 @@ if not mydb:
 artistdb = None
 if not mydb:
     artistdb = Mysql("10.156.102.16", "8306", "root", "root", "music")
+
+
