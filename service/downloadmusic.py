@@ -375,7 +375,8 @@ class DownloadMusic():
                                                                                                 self.thread_num,
                                                                                                 end - start,
                                                                                                 time_count))
-                break
+                # break
+                time.sleep(20)
             # break
 
     def download_one_artist(self, artist):

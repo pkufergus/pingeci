@@ -73,7 +73,7 @@ class Music():
         if self.lyric.find("'") >= 0:
             self.lyric.replace("'", "\'")
         sql = """replace into song(id, netid, name, artists, tag, lyric) values('{}', '{}', '{}', '{}', '{}', '{}') """.\
-            format(self.id, self.id, MySQLdb.escape_string(self.name), aids_str, self.tag, MySQLdb.escape_string(self.lyric))
+            format(self.id, self.id, MySQLdb.escape_string(self.name), aids_str, self.tag, MySQLdb.escape_string(self.lyric[:1500]))
         log.info("sql={}".format(sql))
         mydb.exec_write(sql)
         print("save db id={}".format(self.id))
