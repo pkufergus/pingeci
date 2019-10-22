@@ -20,6 +20,8 @@ import urllib
 
 import threading
 lock=threading.Lock()
+
+dblock=threading.Lock()
 import sys
 
 class Artist():
@@ -58,6 +60,9 @@ class Playlist():
         }
         return obj_dict
 
+from model.db import mydb
+from model.db import artistdb
+
 class Music():
     def __init__(self, id, name, tag="", playlist=Playlist()):
         self.id = id
@@ -78,6 +83,60 @@ class Music():
     #     self.lyric = ""
     #     self.data_dir = ""
     #     pass
+
+    def save_db(self):
+        print("save db")
+        # dblock.acquire()
+        aids = [str(x.id) for x in self.artists]
+        aids_str = ";".join(aids)
+        sql = "replace into song(id, netid, name, artists, tag, lyric) values('{}', '{}', '{}', '{}', '{}', '{}') ".\
+            format(self.id, self.id, self.name, aids_str, self.tag, self.lyric)
+        log.info("sql={}".format(sql))
+        mydb.exec_write(sql)
+        print("save db id={}".format(self.id))
+        for a in self.artists:
+            print("a id={}".format(a.id))
+            self.save_artist(a)
+            print("write id={}".format(self.id))
+        # dblock.release()
+        pass
+
+    def save_artist(self, artist):
+        aid = artist.id
+        aname = artist.name
+        print("aid={}".format(aid))
+        sql = """select * from artist where netid='{}' """.format(aid)
+        log.info("sql={}".format(sql))
+        log.info("song id={} in artists={}".format(self.id, aid))
+        results = mydb.query(sql)
+        print("aid={} results=len={}".format(aid, len(results)))
+        songs = ""
+        log.info("song id={} in artists={} song={}".format(self.id, aid, songs))
+        for row in results:
+            netid = row[1]
+            name = row[2]
+            songs = row[3]
+            if len(songs) > 0:
+                sids = songs.split(";")
+                print("songs={} sid={} id={}".format(songs, sids, self.id))
+                if self.id in set(sids):
+                    print("song id={} in artists={}".format(self.id, aid))
+                    return
+                else:
+                    sids.append(self.id)
+                    print("songs={} sid={} id={}".format(songs, sids, self.id))
+                songs = ";".join(sids)
+        print("songs={}, id={}".format(songs, self.id))
+        if len(songs) < 1:
+            songs = self.id
+            log.info("song id={} in artists={}".format(self.id, aid))
+        sql = """replace into artist(id, netid, name, songs) values('{}', '{}', '{}', '{}') """. \
+            format(aid, aid, aname, songs)
+        log.info("sql={}".format(sql))
+        mydb.exec_write(sql)
+        log.info("write a={} id={}".format(aid, self.id))
+        print("write a={} id={}".format(aid, self.id))
+
 
     def to_dict(self):
         obj_dict = {
@@ -266,7 +325,7 @@ class DownloadMusic():
         try:
             self._download_one_song(music)
         except Exception as e:
-            log.info("{} music={} error={}".format(music.to_dict(), e))
+            log.info("music={} error={}".format(music.to_dict(), e))
         finally:
             lock.acquire()
             self.g_index += 1
@@ -277,7 +336,7 @@ class DownloadMusic():
         try:
             resp = requests.get(uri,timeout=300)
             response = resp.json()
-            print response
+            # print response
         except BaseException as e:
             print '获取人脸信息失败!'
             print e
@@ -292,20 +351,15 @@ class DownloadMusic():
                 break
 
     def _download_one_song(self, music):
-        playlist = music.playlist
-        if not playlist.root_dir:
-            playlist.root_dir = self.root_dir
-        music_dir = "{}/{}/{}".format(playlist.root_dir, playlist.id, music.id)
-        cmd = "mkdir -p {}".format(music_dir)
-        log.info("cmd={}".format(cmd))
-        os.system(cmd)
+
+
         # music_dir = self.root_dir
         # key = "{}.mp3".format(music.id)
         # if key in self.id_map:
         #     log.info("{} name={} exist".format(key, music.name))
         #     return
 
-        json_file = '{}/{}.json'.format(music_dir, music.id)
+        # json_file = '{}/{}.json'.format(music_dir, music.id)
         # mp3_file = '{}/{}.mp3'.format(self.data_dir, music.id)
         # if os.path.exists(json_file) and os.path.exists(mp3_file):
         #     log.info("{} name={} exist".format(json_file, music.name))
@@ -348,13 +402,13 @@ class DownloadMusic():
 
         if "lrc" in response and "lyric" in response["lrc"]:
             music.lyric = response["lrc"]["lyric"]
-            print("id={} lyric={}".format(music.id, music.lyric))
+            # print("id={} lyric={}".format(music.id, music.lyric))
 
         uri = "{}/song/detail?ids={}".format(self.server, music.id)
         try:
             resp = requests.get(uri,timeout=60)
             response = resp.json()
-            print response
+            # log.info(response)
         except BaseException as e:
             print '获取人脸信息失败!'
             print e
@@ -368,13 +422,26 @@ class DownloadMusic():
                         a_name = a["name"]
                         music.artists.append(Artist(a_id, a_name))
                 break
-
+        # print("m={}".format(music.to_dict()))
+        playlist = music.playlist
+        if not playlist.root_dir:
+            playlist.root_dir = self.root_dir
+        root_dir = self.root_dir
+        id_dir = ""
+        if music.artists:
+            id_dir = music.artists[0].id
+        music_dir = "{}/{}/{}".format(root_dir, id_dir, music.id)
+        cmd = "mkdir -p {}".format(music_dir)
+        log.info("cmd={}".format(cmd))
+        os.system(cmd)
         obj_dict = music.to_dict()
-        obj_json = json.dumps(obj_dict)
-        print("id={} json={}".format(music.id, obj_json))
+        obj_json = json.dumps(obj_dict, ensure_ascii=False)
+        # print("id={} json={}".format(music.id, obj_json))
         f = open('{}/{}.json'.format(music_dir, music.id), 'w')
         f.write(obj_json)
         f.close()
+        music.save_db()
+        print("save {} ok!".format(music.id))
 
 
     def get_artist(self):
@@ -413,7 +480,8 @@ class DownloadMusic():
 
 
                         self.download_one_artist(ar)
-                        break
+                        time.sleep(1)
+                        # break
                 start = time.time()
                 while self.g_index < self.thread_num - 1 and time_count < 3600:
                     log.info(
@@ -430,7 +498,7 @@ class DownloadMusic():
                                                                                                 end - start,
                                                                                                 time_count))
                 break
-            break
+            # break
 
     def download_one_artist(self, artist):
         # pl_dir = "{}/{}".format(self.root_dir, playlist.id)
@@ -452,20 +520,20 @@ class DownloadMusic():
         if "hotSongs" in response:
             i = 0
             for song in response["hotSongs"]:
-                song_id = song["id"]
-                song_name = song["name"]
+                song_id = str(song["id"])
+                song_name = str(song["name"])
                 m = Music(song_id, song_name)
-                if "ar" in song:
-                    for a in song["ar"]:
-                        a_id = a["id"]
-                        a_name = a["name"]
-                        m.artists.append(Artist(a_id, a_name))
+                # if "ar" in song:
+                #     for a in song["ar"]:
+                #         a_id = a["id"]
+                #         a_name = a["name"]
+                #         m.artists.append(Artist(a_id, a_name))
                 print("music name={} id={}".format(song_name, song_id))
                 self.thread_num += 1
                 self.download_one_song(m)
                 i += 1
-                break
-                # if i > self.song_limit:
+                # break
+                # if i > 3:
                 #     break
 
     def get_douyin(self):

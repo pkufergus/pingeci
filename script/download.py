@@ -66,10 +66,12 @@ def download_artist():
     dl.get_artist()
 
 
+import time
 
 if __name__ == '__main__':
     #run()
     download_artist()
+    # time.sleep(1000)
     # dl.get_catlist()
 
     #dl.get_playlist(2, "清晨")
