@@ -25,6 +25,7 @@ dblock=threading.Lock()
 import sys
 
 from model.struct import *
+from model import dbops
 
 
 class DownloadMusic():
@@ -332,7 +333,7 @@ class DownloadMusic():
         print("prefix={}".format(prefix_artist))
         # url = "https://music.163.com/#/discover/artist/cat?id={}&initial={}"
         url = "{}/artist/list?cat={}&limit=100"
-        for type_id in type_ids[2:]:
+        for type_id in type_ids[3:]:
             id_list = [type_id + x for x in ["001", "002", "003"]]
             for t_id in id_list:
                 a_num = 0
@@ -380,7 +381,7 @@ class DownloadMusic():
                 # break
                 log.info("down success typeid={} t_id={} a num={}".format(type_id, t_id, a_num))
                 time.sleep(20)
-            break
+            # break
 
     def download_one_artist(self, artist):
         # pl_dir = "{}/{}".format(self.root_dir, playlist.id)
@@ -410,13 +411,14 @@ class DownloadMusic():
                 #         a_id = a["id"]
                 #         a_name = a["name"]
                 #         m.artists.append(Artist(a_id, a_name))
-                print("music name={} id={}".format(song_name, song_id))
+                # print("music name={} id={}".format(song_name, song_id))
                 self.thread_num += 1
                 self.download_one_song(m)
                 i += 1
                 # break
                 # if i > 3:
                 #     break
+        print("down artist ok id={} name={}".format(artist.id, artist.name))
 
     def get_douyin(self):
 
@@ -448,6 +450,41 @@ class DownloadMusic():
 
         f.close()
 
+    def get_top_artist(self):
+        cmd = "mkdir -p {}".format(self.root_dir)
+        log.info("cmd={}".format(cmd))
+        os.system(cmd)
+        url = "{}/top/artists".format(self.server)
+        a_num = 0
+        try:
+            resp = requests.get(url, timeout=120)
+            response = resp.json()
+            # response
+        except BaseException as e:
+            print '{}获取artist fail!'.format(url)
+            log.fatal("err={} url={}".format(e, url))
+            print e
+            print("uri={}".format(url))
+        artist_list = []
+        if "artists" in response:
+            for one_artist in response["artists"]:
+                a_id = str(one_artist["id"]).strip()
+                a_name = str(one_artist["name"]).strip()
+                ar = Artist(a_id, a_name)
+                artist_list.append(ar)
+                self.download_one_artist(ar)
+                a_num += 1
+                time.sleep(1)
+        print("down ok a_num={}".format(a_num))
+        log.info("down ok a_num={}".format(a_num))
+        if len(artist_list) < 1:
+            log.fatal("too few top artists len={}".format(len(artist_list)))
+            return
+        log.info("write artist into top list")
+        ar_str_list = [str(a.id) + "$$" + str(a.name) for a in artist_list]
+        ar_str_list_str = ";".join(ar_str_list)
+        dbops.write_top_artist(ar_str_list_str)
+        log.info('write artist into top list success')
 
 
 if __name__ == '__main__':

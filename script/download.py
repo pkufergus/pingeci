@@ -67,12 +67,34 @@ def download_artist():
     print("download success")
     log.info("download success")
 
+def download_top_artist():
+    root_dir = "/home/test/data/music/artist"
+    filename = "{}/artist.txt".format(root_dir)
+    dl = downloadmusic.DownloadMusic()
+    dl.limit = 10
+    dl.root_dir = root_dir
+    dl.get_top_artist()
+    print("download success")
+    log.info("download success")
+    pass
+
+def download_top_song():
+    pass
 
 import time
 
 if __name__ == '__main__':
     #run()
-    download_artist()
+    if len(sys.argv) < 2:
+        exit()
+    cmd = sys.argv[1]
+    if cmd == "down":
+        download_artist()
+    elif cmd == "top_artist":
+        download_top_artist()
+    elif cmd == "top_song":
+        download_top_song()
+
     # time.sleep(1000)
     # dl.get_catlist()
 

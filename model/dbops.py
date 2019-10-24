@@ -3,6 +3,7 @@ from util.util import *
 from struct import *
 
 from db import *
+import MySQLdb
 
 def get_song(songid, flag = False):
     sql = """
@@ -55,3 +56,35 @@ def get_artist_songs(aid):
         song = get_song(sid)
         songs.append(song)
     return songs
+
+def write_top_artist(ar_list_str):
+    sql = """
+        replace into kv(keyid, value)
+        values('{}', '{}')
+    """.format("top_artists", MySQLdb.escape_string(ar_list_str))
+    log.debug("sql = {}".format(sql))
+    mydb.exec_write(sql)
+    log.debug("save db ok arlist={}".format(ar_list_str))
+
+def get_top_artist():
+    sql = """
+        select keyid, value
+        from kv
+        where keyid='{}'
+    """.format('top_artists')
+    log.debug("sql = {}".format(sql))
+    results = onlinedb.query(sql)
+    artists = []
+    if len(results) < 1:
+        return artists
+    row = results[0]
+    log.info("row={}".format(row))
+    keyid = str(row[0])
+    log.info("row[1]={}".format(row[1]))
+    value = row[1]
+    ar_str_list = value.split(";")
+    log.info("ar_str_list={}".format(ar_str_list))
+    for ar_str in ar_str_list:
+        aid, aname = str(ar_str).split("$$")
+        artists.append(Artist(aid, aname))
+    return artists
