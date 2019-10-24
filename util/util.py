@@ -7,7 +7,7 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 
 log = None
-def get_log(name=""):
+def get_log(name="main"):
     global log
     if log:
         return log
@@ -18,7 +18,7 @@ def get_log(name=""):
     formater = logging.Formatter(fmt)
     if not os.path.exists("./log/"):
         os.mkdir("./log/")
-    handler = logging.handlers.TimedRotatingFileHandler("./log/main.log", "midnight", 1, 7)
+    handler = logging.handlers.TimedRotatingFileHandler("./log/{}.log".format(name), "midnight", 1, 7)
     handler.setFormatter(formater)
     log.addHandler(handler)
     return log

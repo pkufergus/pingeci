@@ -26,9 +26,8 @@ class Mysql(object):
         except Exception as e:
             errormsg = 'write db ERROR(%s):%s' % (e.args[0], e.args[1])
             print(errormsg)
-            log.fatal("err={}".format(errormsg))
+            log.fatal("err={} sql={}".format(errormsg, sql))
             self.conn.rollback()
-            exit(2)
         finally:
             self.lock.release()
 
@@ -42,7 +41,7 @@ class Mysql(object):
         except Exception as e:
             errormsg = 'query db ERROR(%s):%s' % (e.args[0], e.args[1])
             print(errormsg)
-            log.fatal("err={}".format(errormsg))
+            log.fatal("err={} sql={}".format(errormsg, sql))
         finally:
             self.lock.release()
         return results
@@ -52,7 +51,11 @@ if not mydb:
     mydb = Mysql("10.156.102.16", "8306", "root", "root", "music")
 
 artistdb = None
-if not mydb:
+if not artistdb:
     artistdb = Mysql("10.156.102.16", "8306", "root", "root", "music")
+
+onlinedb = None
+if not onlinedb:
+    onlinedb = Mysql("10.156.102.16", "8306", "root", "root", "music")
 
 

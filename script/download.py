@@ -64,6 +64,8 @@ def download_artist():
     dl.limit = 10
     dl.root_dir = root_dir
     dl.get_artist()
+    print("download success")
+    log.info("download success")
 
 
 import time

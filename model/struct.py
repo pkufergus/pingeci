@@ -67,21 +67,36 @@ class Music():
 
     def save_db(self):
         print("save db")
+        log.debug("save db id={}".format(self.id))
         # dblock.acquire()
         aids = [str(x.id) for x in self.artists]
-        aids_str = ";".join(aids)
-        if self.lyric.find("'") >= 0:
-            self.lyric.replace("'", "\'")
+        if len(aids) > 30:
+            log.warn("music id={} aids to long={}".format(self.id, aids))
+            aids = aids[:30]
+        log.debug("save db id={}".format(self.id))
+
+        if aids:
+            aids_str = ";".join(aids)
+        else:
+            aids_str = ""
+        log.debug("save db id={}".format(self.id))
+        # if self.lyric.find("'") >= 0:
+        #     self.lyric.replace("'", "\'")
+        if len(self.lyric) > 1500:
+            log.warn("music id={} lyric too long={}".format(self.id, self.lyric))
+            self.lyric = self.lyric[:1500]
+        log.debug("save db id={}".format(self.id))
         sql = """replace into song(id, netid, name, artists, tag, lyric) values('{}', '{}', '{}', '{}', '{}', '{}') """.\
             format(self.id, self.id, MySQLdb.escape_string(self.name), aids_str, self.tag, MySQLdb.escape_string(self.lyric[:1500]))
         log.info("sql={}".format(sql))
         mydb.exec_write(sql)
-        print("save db id={}".format(self.id))
+        log.debug("save db id={}".format(self.id))
         for a in self.artists:
-            print("a id={}".format(a.id))
+            log.debug("a id={}".format(a.id))
             self.save_artist(a)
-            print("write id={}".format(self.id))
+            log.debug("write id={}".format(self.id))
         # dblock.release()
+        log.debug("save db id={}".format(self.id))
         pass
 
     def save_artist(self, artist):
@@ -95,6 +110,7 @@ class Music():
         print("aid={} results=len={}".format(aid, len(results)))
         songs = ""
         log.info("song id={} in artists={} song={}".format(self.id, aid, songs))
+        sids = []
         for row in results:
             netid = row[1]
             name = row[2]
@@ -108,8 +124,11 @@ class Music():
                 else:
                     sids.append(self.id)
                     print("songs={} sid={} id={}".format(songs, sids, self.id))
-                songs = ";".join(sids)
         print("songs={}, id={}".format(songs, self.id))
+        if len(sids) > 200:
+            log.warn("aid={} songs too long={}".format(aid, sids))
+            sids = sids[:200]
+        songs = ";".join(sids)
         if len(songs) < 1:
             songs = self.id
             log.info("song id={} in artists={}".format(self.id, aid))

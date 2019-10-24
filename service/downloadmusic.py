@@ -332,9 +332,10 @@ class DownloadMusic():
         print("prefix={}".format(prefix_artist))
         # url = "https://music.163.com/#/discover/artist/cat?id={}&initial={}"
         url = "{}/artist/list?cat={}&limit=100"
-        for type_id in type_ids:
+        for type_id in type_ids[2:]:
             id_list = [type_id + x for x in ["001", "002", "003"]]
             for t_id in id_list:
+                a_num = 0
                 print("type id={}".format(t_id))
                 uri = url.format(self.server, t_id)
                 print("uri={}".format(uri))
@@ -358,26 +359,28 @@ class DownloadMusic():
 
 
                         self.download_one_artist(ar)
+                        a_num += 1
                         time.sleep(1)
                         # break
                 start = time.time()
-                while self.g_index < self.thread_num - 1 and time_count < 3600:
-                    log.info(
-                        "wait for end list g_index={} thread_num={} time={}".format(self.g_index,
-                                                                                          self.thread_num,
-                                                                                          time_count))
-                    time.sleep(1)
-                    time_count += 1
+                # while self.g_index < self.thread_num - 1 and time_count < 3600:
+                #     log.info(
+                #         "wait for end list g_index={} thread_num={} time={}".format(self.g_index,
+                #                                                                           self.thread_num,
+                #                                                                           time_count))
+                #     time.sleep(1)
+                #     time_count += 1
                 end = time.time()
                 log.info(
                     "wait for end list g_index={} thread_num={} time={}s count={}".format(
-                                                                                                self.g_index,
-                                                                                                self.thread_num,
-                                                                                                end - start,
-                                                                                                time_count))
+                        self.g_index,
+                        self.thread_num,
+                        end - start,
+                        time_count))
                 # break
+                log.info("down success typeid={} t_id={} a num={}".format(type_id, t_id, a_num))
                 time.sleep(20)
-            # break
+            break
 
     def download_one_artist(self, artist):
         # pl_dir = "{}/{}".format(self.root_dir, playlist.id)
@@ -452,4 +455,4 @@ if __name__ == '__main__':
     #dl.get_catlist()
 
     # dl.get_playlist(2, "清晨")
-    dl.download_one_artist(Artist('30892446','河成云'))
+    dl.download_one_artist(Artist('840134','刘瑞琦'))

@@ -2,6 +2,8 @@
 from util.util import *
 from struct import *
 
+from db import *
+
 def get_song(songid, flag = False):
     sql = """
     select netid, name, artists, lyric 
@@ -9,7 +11,7 @@ def get_song(songid, flag = False):
     where netid='{}'
     """.format(songid)
     log.info("sql={}".format(sql))
-    results = mydb.query(sql)
+    results = onlinedb.query(sql)
     if len(results) < 1:
         return None
     row = results[0]
@@ -36,7 +38,7 @@ def get_artist(aid):
         where netid='{}'
         """.format(aid)
     log.info("sql={}".format(sql))
-    results = mydb.query(sql)
+    results = onlinedb.query(sql)
     if len(results) < 1:
         return ""
     row = results[0]
