@@ -88,3 +88,39 @@ def get_top_artist():
         aid, aname = str(ar_str).split("$$")
         artists.append(Artist(aid, aname))
     return artists
+
+
+def write_top_song(song_list_str):
+    sql = """
+        replace into kv(keyid, value)
+        values('{}', '{}')
+    """.format("top_songs", MySQLdb.escape_string(song_list_str[:12000]))
+    log.debug("sql = {}".format(sql))
+    mydb.exec_write(sql)
+    log.debug("save db ok song={}".format(song_list_str))
+
+def get_top_songs(limit=20):
+    songs = []
+    if limit < 1 or limit > 200:
+        log.fatal("err=limit error")
+        return songs
+    sql = """
+        select keyid, value
+        from kv
+        where keyid='{}'
+    """.format('top_songs')
+    log.debug("sql = {}".format(sql))
+    results = onlinedb.query(sql)
+    if len(results) < 1:
+        return songs
+    row = results[0]
+    log.info("row={}".format(row))
+    keyid = str(row[0])
+    log.info("row[1]={}".format(row[1]))
+    value = row[1]
+    song_str_list = value.split(";")
+    log.info("top_songs={}".format(song_str_list))
+    for song_str in song_str_list:
+        id, name = str(song_str).split("$$")
+        songs.append(Music(id, name))
+    return songs[:limit]

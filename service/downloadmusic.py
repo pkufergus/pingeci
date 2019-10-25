@@ -199,6 +199,47 @@ class DownloadMusic():
                 if i > self.song_limit:
                     break
 
+    def download_top_list(self):
+        url = "{}/top/list?idx=".format(self.server)
+
+        ids = [i for i in range(34)]
+        for id in ids:
+            if id != 1:
+                continue
+            try:
+                uri = url + "{}".format(id)
+                resp = requests.get(uri)
+                response = resp.json()
+                print response
+            except Exception as e:
+                print 'top list!'
+                log.fatal("toplist fail err={} uri={}".format(e, uri))
+                print e
+                return None
+
+            song_list = []
+            if "playlist" in response and "tracks" in response["playlist"]:
+                i = 0
+                for track in response["playlist"]["tracks"]:
+                    song_id = str(track["id"])
+                    song_name = track["name"]
+                    m = Music(song_id, song_name)
+                    song_list.append(m)
+                    print("music name={} id={}".format(song_name, song_id))
+                    self.thread_num += 1
+                    self.download_one_song(m)
+                    i += 1
+                    # break
+            log.info("down ok a_num={}".format(len(song_list)))
+            if len(song_list) < 5:
+                log.fatal("too few top song len={}".format(len(song_list)))
+                return
+            log.info("write song into top list")
+            song_str_list = [str(a.id) + "$$" + str(a.name) for a in song_list[:200]]
+            song_str_list_str = ";".join(song_str_list)
+            dbops.write_top_song(song_str_list_str)
+            log.info('write song into top list success')
+
     @threads(20)
     def download_one_song(self, music):
         try:
@@ -230,44 +271,6 @@ class DownloadMusic():
                 break
 
     def _download_one_song(self, music):
-
-
-        # music_dir = self.root_dir
-        # key = "{}.mp3".format(music.id)
-        # if key in self.id_map:
-        #     log.info("{} name={} exist".format(key, music.name))
-        #     return
-
-        # json_file = '{}/{}.json'.format(music_dir, music.id)
-        # mp3_file = '{}/{}.mp3'.format(self.data_dir, music.id)
-        # if os.path.exists(json_file) and os.path.exists(mp3_file):
-        #     log.info("{} name={} exist".format(json_file, music.name))
-        #     return
-        #
-        # if os.path.exists(mp3_file):
-        #     log.info("{} name={} exist".format(mp3_file, music.name))
-        # else:
-        #     self._download_one_song_mp3(music)
-
-        # uri = "{}/music/url?id={}".format(self.server, music.id)
-        #
-        # try:
-        #     resp = requests.get(uri,timeout=60)
-        #     response = resp.json()
-        #     print response
-        # except BaseException as e:
-        #     print '获取人脸信息失败!'
-        #     print e
-        #     return None
-        #
-        # if "data" in response:
-        #     for one_music in response["data"]:
-        #         url = one_music["url"]
-        #         cmd = "wget -c {} -O {}/{}.mp3 -o {}/{}.wget.log".format(url, music_dir, music.id, music_dir, music.id)
-        #         log.info("cmd={}".format(cmd))
-        #         os.system(cmd)
-        #         break
-
         uri = "{}/lyric?id={}".format(self.server, music.id)
 
         try:

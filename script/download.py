@@ -79,6 +79,12 @@ def download_top_artist():
     pass
 
 def download_top_song():
+    root_dir = "/home/test/data/music/artist"
+    dl = downloadmusic.DownloadMusic()
+    dl.root_dir = root_dir
+    dl.download_top_list()
+    print("download song success")
+    log.info("download song success")
     pass
 
 import time
