@@ -29,8 +29,7 @@ from model import dbops
 
 
 class DownloadMusic():
-    server = "http://yq01-ps-7-m12-wise080.yq01.baidu.com:8002"
-    server = "http://yq01-bdl-bdl126.yq01.baidu.com:8310"
+    server = "10.156.102.16:8310"
     # root_dir = "/home/work/data/music"
     def __init__(self):
         self.g_index = 0
@@ -44,7 +43,7 @@ class DownloadMusic():
         pass
 
     def load(self):
-        filename="/home/work/caosong/data/meta/all_music.list"
+        filename="/home/work/test/data/meta/all_music.list"
         with open(filename, 'r') as f:
             i = 0
             for line in f.readlines():

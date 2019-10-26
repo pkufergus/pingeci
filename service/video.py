@@ -42,7 +42,7 @@ class Video():
         return obj_dict
 
 class DownloadVideo():
-    root_dir = "/home/work/caosong/data/video"
+    root_dir = "/home/work/test/data/video"
     def __init__(self):
         self.g_index = 0
         self.thread_num = 0

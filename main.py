@@ -38,7 +38,7 @@ application = tornado.web.Application(
     **settings)
 
 if __name__ == "__main__":
-    hostname="yq01-bdl-bdl126.yq01.baidu.com"
+    hostname="10.156.102.16"
     port=8330
     print("http://{}:{}".format(hostname, port))
     print("http://{}:{}/page".format(hostname, port))
