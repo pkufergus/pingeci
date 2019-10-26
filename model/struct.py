@@ -5,9 +5,10 @@ from datetime import date,datetime
 from tomorrow import threads
 import MySQLdb
 from util.util import log
+import re
 
 class Artist():
-    def __init__(self, id, name):
+    def __init__(self, id="", name=""):
         self.id = id
         self.name = name
         pass
@@ -18,6 +19,12 @@ class Artist():
             "name":self.name,
         }
         return obj_dict
+
+    def from_dict(self, a_dict):
+        self.id = a_dict.get("id", "")
+        self.name = a_dict.get("name", "")
+        return self
+
 
 class Playlist():
     def __init__(self, id="", name="", tag=""):
@@ -45,7 +52,7 @@ class Playlist():
 from db import mydb
 
 class Music():
-    def __init__(self, id, name, tag="", playlist=Playlist()):
+    def __init__(self, id="", name="", tag="", playlist=Playlist()):
         self.id = id
         self.name = name
         self.tag = [tag]
@@ -53,6 +60,7 @@ class Music():
         self.artists = []
         self.lyric = ""
         self.data_dir = ""
+        self.lyric_highlight = ""
         pass
 
     # def __init__(self, id, name):
@@ -145,8 +153,28 @@ class Music():
             "id":self.id,
             "name":self.name,
             "lyric":self.lyric,
+            "lyric_highlight":self.lyric_highlight,
             "tag":self.tag,
             "playlist":self.playlist.to_dict(),
             "artists":[x.to_dict() for x in self.artists],
         }
         return obj_dict
+
+    def from_dict(self, song_dict):
+        self.id = song_dict.get("id", "")
+        self.name = song_dict.get("name", "")
+        self.lyric = song_dict.get("lyric" "")
+        self.tag = song_dict.get("tag", "")
+        self.artists = [Artist().from_dict(a) for a in song_dict.get("artists", [])]
+        return self
+
+    def highlight(self, q):
+        p = re.compile(r"\[[0-9][0-9]:[0-9][0-9]\..{1,5}\]")
+        self.lyric_highlight = p.sub("", self.lyric)
+        # print("hl={}".format(self.lyric_highlight))
+        p2 = re.compile(r'\n')
+        y = p2.sub(" ", self.lyric_highlight)
+        # print("hl2={}".format(y))
+        # print("q={}".format(q))
+        self.lyric_highlight = y.replace("{}".format(q), "[hight_light_start]{}[hight_light_end]".format(q))
+        print("hl3={}".format(self.lyric_highlight))

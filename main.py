@@ -17,6 +17,7 @@ sys.setdefaultencoding('utf-8')
 from api.handler import MainHandler
 from api.songhandler import SongHandler
 from api.songhandler import TopSongsHandler
+from api.searchhandler import SearchHandler
 from api.artisthandler import ArtistHandler
 from api.topartistshandler import TopArtistsHandler
 
@@ -32,6 +33,7 @@ application = tornado.web.Application(
               (r'/artist', ArtistHandler),
               (r'/top_artists', TopArtistsHandler),
               (r'/top_songs', TopSongsHandler),
+              (r'/search', SearchHandler),
               ],
     **settings)
 
@@ -44,5 +46,6 @@ if __name__ == "__main__":
     print("http://{}:{}/artist?artistid=".format(hostname, port))
     print("http://{}:{}/top_artists".format(hostname, port))
     print("http://{}:{}/top_songs".format(hostname, port))
+    print("http://{}:{}/search".format(hostname, port))
     application.listen(8330)
     tornado.ioloop.IOLoop.instance().start()
