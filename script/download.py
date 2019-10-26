@@ -1,15 +1,8 @@
 # -*- coding: UTF-8 -*-
 ################################################################################
 #
-# Copyright (c) 2019 Baidu.com, Inc. All Rights Reserved
 #
 ################################################################################
-"""
-本文件提供了命令行工具的入口逻辑。
-
-Authors: caosong(caosong@baidu.com)
-Date:    2019/01/22 15:22:29
-"""
 
 from __future__ import absolute_import
 from __future__ import print_function
@@ -35,7 +28,7 @@ sys.path.append("..")
 from service import downloadmusic
 
 def run():
-    root_dir = "/home/work/caosong/data/music/"
+    root_dir = "/home/work/data/music/"
     filename = "{}/taglist.txt".format(root_dir)
     dl = downloadmusic.DownloadMusic()
     dl.limit = 100
