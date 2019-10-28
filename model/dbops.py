@@ -2,7 +2,7 @@
 from util.util import *
 from struct import *
 
-from db import *
+from mysqlpool import *
 import MySQLdb
 
 def get_song(songid, flag = False):
@@ -12,7 +12,7 @@ def get_song(songid, flag = False):
     where netid='{}'
     """.format(songid)
     log.info("sql={}".format(sql))
-    results = onlinedb.query(sql)
+    results = mypool.query(sql)
     if len(results) < 1:
         return None
     row = results[0]
@@ -39,7 +39,7 @@ def get_artist(aid):
         where netid='{}'
         """.format(aid)
     log.info("sql={}".format(sql))
-    results = onlinedb.query(sql)
+    results = mypool.query(sql)
     if len(results) < 1:
         return ""
     row = results[0]
@@ -63,7 +63,7 @@ def write_top_artist(ar_list_str):
         values('{}', '{}')
     """.format("top_artists", MySQLdb.escape_string(ar_list_str))
     log.debug("sql = {}".format(sql))
-    mydb.exec_write(sql)
+    mypool.exec_write(sql)
     log.debug("save db ok arlist={}".format(ar_list_str))
 
 def get_top_artist():
@@ -73,7 +73,7 @@ def get_top_artist():
         where keyid='{}'
     """.format('top_artists')
     log.debug("sql = {}".format(sql))
-    results = onlinedb.query(sql)
+    results = mypool.query(sql)
     artists = []
     if len(results) < 1:
         return artists
@@ -96,7 +96,7 @@ def write_top_song(song_list_str):
         values('{}', '{}')
     """.format("top_songs", MySQLdb.escape_string(song_list_str[:12000]))
     log.debug("sql = {}".format(sql))
-    mydb.exec_write(sql)
+    mypool.exec_write(sql)
     log.debug("save db ok song={}".format(song_list_str))
 
 def get_top_songs(limit=20):
@@ -110,7 +110,7 @@ def get_top_songs(limit=20):
         where keyid='{}'
     """.format('top_songs')
     log.debug("sql = {}".format(sql))
-    results = onlinedb.query(sql)
+    results = mypool.query(sql)
     if len(results) < 1:
         return songs
     row = results[0]
