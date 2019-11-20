@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>{% block title %}{{ handler.get_runtime_conf('title') }}{% end %}</title>
+<meta name="description" content="{% block descr %}{{ handler.get_runtime_conf('descr') }}{% end %}">
+<meta name="keywords" content="{% block keyws %}{{ handler.get_runtime_conf('keyws') }}{% end %}">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="{{ handler.asset('src/bootstrap.min.css') }}">
+<link rel="stylesheet" href="{{ handler.asset('src/bootstrap-responsive.min.css') }}">
+
+<link rel="stylesheet" href="{{ handler.asset('src/framework.min.css') }}">
+<link rel="stylesheet" href="{{ handler.asset('src/framework-responsive.min.css') }}">
+
+<link rel="stylesheet" href="{{ handler.asset('src/customize.min.css') }}">
+<link rel="stylesheet" href="{{ handler.asset('src/customize-responsive.min.css') }}">
+
+<!--[if lt IE 9]><script src="{{ handler.asset('src/html5shiv.min.js') }}"></script><![endif]-->
+
+{% block head %}{% end %}
+
+{% block stats %}{% raw handler.get_runtime_conf('stats') %}{% end %}
+</head>
+
+<body data-exts-scrollup="1" data-spy="scroll">
+<header class="header topfix">
+    <!--<nav class="navbar navbar-fixed-top">-->
+        <!--<div class="navbar-inner">-->
+            <!--<button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">-->
+                <!--<span class="icon-bar"></span>-->
+                <!--<span class="icon-bar"></span>-->
+                <!--<span class="icon-bar"></span>-->
+            <!--</button>-->
+            <!--<div class="container">-->
+                <!--<a class="brand" href="/">{% raw handler.get_runtime_conf('brand') %}</a>-->
+                <!--{% if handler.current_user %}-->
+                <!--<ul class="nav nav-tool-bar pull-right">-->
+                    <!--<li><a href="/@{{url_escape(handler.current_user['user_name'])}}"><i class="icon-user"></i><span class="panel-user-name"> {{ handler.current_user['user_name'] }}</span></a></li>-->
+                    <!--<li><a href="/shell"><i class="icon-cog"></i></a></li>-->
+                    <!--<li><a href="/leave"><i class="icon-off"></i></a></li>-->
+                <!--</ul>-->
+                <!--{% end %}-->
+
+                <!--<div class="nav-collapse collapse">-->
+                    <!--<ul class="nav">-->
+                        <!--{% block navs %}{% end %}-->
+                    <!--</ul>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</nav>-->
+</header>
+
+
+
+<footer class="footer">
+
+</footer>
+
+<script src="{{ handler.asset('src/jquery-1.10.1.min.js') }}"></script>
+<script src="{{ handler.asset('src/jquery.form.min.js') }}"></script>
+<script src="{{ handler.asset('src/jquery.scrollUp.min.js') }}"></script>
+<script src="{{ handler.asset('src/bootstrap.min.js') }}"></script>
+<script src="{{ handler.asset('src/customize.min.js') }}"></script>
+{% block foot %}{% end %}
+</body>
+</html>

@@ -2,7 +2,6 @@
 import json
 import os
 from datetime import date,datetime
-from tomorrow import threads
 import MySQLdb
 from util.util import log
 import re

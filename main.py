@@ -6,6 +6,7 @@ import tornado.web
 from tornado import httpclient
 from tornado.web import asynchronous
 from tornado import gen
+from tornado.options import define, options
 
 import sys
 
@@ -21,25 +22,28 @@ from api.searchhandler import SearchHandler
 from api.artisthandler import ArtistHandler
 from api.topartistshandler import TopArtistsHandler
 
-settings = {
-    'template_path': 'templates',
-    'static_path': 'static',
-    'static_url_prefix': '/static/',
-}
+from ctrls.posts import PostsCtrl
+
+from etc import etc
+
 
 application = tornado.web.Application(
     handlers=[(r'/', MainHandler),
+              (r'/posts', PostsCtrl),
               (r'/song', SongHandler),
               (r'/artist', ArtistHandler),
               (r'/top_artists', TopArtistsHandler),
               (r'/top_songs', TopSongsHandler),
               (r'/search', SearchHandler),
               ],
-    **settings)
+    **etc)
 
+define("port", default=8330, help="run on the given port", type=int)
 if __name__ == "__main__":
+    options.parse_command_line()
+    port = options.port
     hostname="10.156.102.16"
-    port=8330
+    hostname="127.0.0.1"
     print("http://{}:{}".format(hostname, port))
     print("http://{}:{}/page".format(hostname, port))
     print("http://{}:{}/song?songid=".format(hostname, port))
@@ -47,5 +51,5 @@ if __name__ == "__main__":
     print("http://{}:{}/top_artists".format(hostname, port))
     print("http://{}:{}/top_songs".format(hostname, port))
     print("http://{}:{}/search".format(hostname, port))
-    application.listen(8330)
+    application.listen(port)
     tornado.ioloop.IOLoop.instance().start()

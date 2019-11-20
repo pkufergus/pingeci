@@ -1,0 +1,7 @@
+{% if handler.get_runtime_conf('menus') %}
+{% for item in handler.jsons(handler.get_runtime_conf('menus')) %}
+{% if 'menu' in item and 'text' in item and item['text'] and 'href' in item and item['href'] %}
+<li{% if menu == item['menu'] %} class="active"{% end %}><a href="{{ item['href'] }}">{{ item['text'] }}</a></li>
+{% end %}
+{% end %}
+{% end %}

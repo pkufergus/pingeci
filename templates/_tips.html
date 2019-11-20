@@ -1,0 +1,7 @@
+{% if tips %}
+{% for item in tips %}
+{% if 'text' in item and item['text'] %}
+<div class="alert alert-block{% if 'type' in item %} alert-{{ item['type'] }}{% end %}">{% raw item['text'] %}</div>
+{% end %}
+{% end %}
+{% end %}
