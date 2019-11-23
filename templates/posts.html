@@ -7,6 +7,40 @@
 <div class="row">
     <div class="span8">
         {% set flips = handler.jsons(handler.get_runtime_conf('flips')) %}
+        {% if flips %}
+        <div id="carousel" class="carousel slide thumbnail">
+            <ol class="carousel-indicators">
+                {% for (i, v) in enumerate(flips) %}
+                <li data-target="#carousel" data-slide-to="{{ i }}"{% if (not i) and (len(flips) > 1) %} class="active"{% end %}></li>
+                {% end %}
+            </ol>
+            <div class="carousel-inner">
+                {% for (i, v) in enumerate(flips) %}
+                <div class="item{% if not i %} active{% end %}">
+                    {% if 'href' in v %}<a href="{{ v['href'] }}" target="_blank" title="{{ v['head'] }}"><img src="{{ v['file'] }}"></a>{% else %}<img src="{{ v['file'] }}">{% end %}
+                    <div class="carousel-caption">
+                        <h4>{{ v['head'] }}</h4>
+                        <p>{{ v['body'] }}</p>
+                    </div>
+                </div>
+                {% end %}
+            </div>
+            {% if len(flips) > 1 %}
+            <a class="left carousel-control" href="#carousel" data-slide="prev">‹</a>
+            <a class="right carousel-control" href="#carousel" data-slide="next">›</a>
+            {% end %}
+        </div>
+        {% end %}
+
+        <ul class="breadcrumb">
+            <li><a href="/"><i class="icon-home"></i></a> <span class="divider">/</span></li>
+            <li><a href="/">热门歌词</a> <span class="divider">/</span></li>
+            <li class="active">{{ track }}</li>
+        </ul>
+
+        <div>
+            {% module Template("index/index/posts.html", pager=pager, posts=posts, psers=psers, ptids=ptids, ptags=ptags) %}
+        </div>
     </div>
     
     {% include "_side.html" %}

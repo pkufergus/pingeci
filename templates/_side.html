@@ -33,11 +33,11 @@
     </ul>
     {% end %}
 
-    {% if posts_hot %}
+    {% if artists_hot %}
     <ul class="nav nav-tabs nav-stacked">
-        <li class="active"><a href="javascript:;">热门文章</a></li>
-        {% for val in posts_hot %}
-        <li><a class="texted" title="{{ val['post_descr'] and val['post_descr'] or val['post_title'] }}" href="/p/{{ val['post_id']}}">{{ val['post_title'] }}</a></li>
+        <li class="active"><a href="javascript:;">热门歌手</a></li>
+        {% for val in artists_hot %}
+        <li><a class="texted" title="{{ val['artist_name'] }}" href="/geshou/{{ val['artist_id']}}">{{ val['artist_name'] }}</a></li>
         {% end %}
     </ul>
     {% end %}

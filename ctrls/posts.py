@@ -9,27 +9,38 @@ class PostsCtrl(BasicCtrl):
         pager['page'] = max(int(self.input('page', 1)), 1)
         pager['lgth'] = 0;
 
+        print("_tnm={}".format(_tnm))
         stime = self.stime()
         track = ''
 
         _qry = self.input('q', None)
         _top = False
         _tag = None
-
+        posts = []
         ptids = {}
         ptags = {}
         psers = {}
-        posts = []
         posts_top = {}
-        posts_hot = []
+        artists_hot = []
         posts_new = []
         posts_rel = []
         slabs_top = []
         terms_top = []
         talks_new = []
         links_top = []
+
+        if _qry:
+            pass
+        else:
+            posts = self.datum('posts').get_top_songs()
+            if self.input('page', None) is None:
+                _top = True
+
+            artists_hot = self.datum('posts').get_top_artists()
+
+
         self.render('posts.html', track=track, pager=pager, posts=posts, psers=psers, ptids=ptids, ptags=ptags
-                    , posts_top=posts_top, posts_hot=posts_hot, posts_new=posts_new, posts_rel=posts_rel
+                    , posts_top=posts_top, artists_hot=artists_hot, posts_new=posts_new, posts_rel=posts_rel
                     , slabs_top=slabs_top, terms_top=terms_top, talks_new=talks_new, links_top=links_top)
 
 

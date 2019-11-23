@@ -61,6 +61,22 @@
 
 
 <footer class="footer">
+    <div class="container">
+        {% if handler.get_runtime_conf('qrimg') %}<img class="qrcode pull-right" src="{{ handler.get_runtime_conf('qrimg') }}">{% end %}
+        {% block power %}<p>{% raw handler.get_runtime_conf('power') %}</p>{% end %}
+        {% block built %}<p>{% raw handler.get_runtime_conf('built') %}</p>{% end %}
+        {% block links %}
+        {% if handler.get_runtime_conf('links') %}
+        <ul class="footer-links">
+            {% for link in handler.jsons(handler.get_runtime_conf('links')) %}
+            {% if 'text' in link and link['text'] and 'href' in link and link['href'] %}
+            <li><a href="{{ link['href'] }}" target="_blank">{{ link['text'] }}</a></li>
+            {% end %}
+            {% end %}
+        </ul>
+        {% end %}
+        {% end %}
+    </div>
 
 </footer>
 

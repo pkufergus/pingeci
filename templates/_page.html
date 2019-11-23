@@ -1,0 +1,8 @@
+<div class="pagination pagination-centered">
+    <ul>
+        <li{% if pager['page'] <= 1 %} class="disabled"><a href="javascript:;">首页</a>{% else %}><a data-pjax="1" href="{% raw handler.tourl(handler.merge_query({}, ['page'])) %}">首页</a>{% end %}</li>
+        <li{% if pager['page'] <= 1 %} class="disabled"><a href="javascript:;">上一页</a>{% else %}><a data-pjax="1" href="{% if pager['page'] > 2 %}{% raw handler.tourl(handler.merge_query({'page':pager['page']-1})) %}{% else %}{% raw handler.tourl(handler.merge_query({}, ['page'])) %}{% end %}">上一页</a>{% end %}</li>
+        <li class="active disabled"><a href="javascript:;">{{ pager['page'] }}</a></li>
+        {% if not pager['lgth'] %}<li class="disabled"><a href="javascript:;">下一页</a></li>{% else %}<li><a data-pjax="1" href="{% raw handler.tourl(handler.merge_query({'page':pager['page']+1})) %}">下一页</a></li>{% end %}
+    </ul>
+</div>

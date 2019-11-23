@@ -1,0 +1,274 @@
+{% extends "../_base.html" %}
+
+{% block title %}{{ post['post_title'] }} - {{ handler.get_runtime_conf('title') }}{% end %}
+{% block descr %}{{ post['post_descr'] and post['post_descr'] or post['post_title'] }}{% end %}
+
+{% block keyws %}{% if post['post_id'] in ptids %}{% for term in ptids[post['post_id']] %}{{ ptags[term['term_id']]['term_name']}} {% end %}{% end %}{{ handler.get_runtime_conf('keyws') }}{% end %}
+
+{% block head %}
+<style>
+    #form-talk .control-label {
+        text-align: left;
+    }
+
+    .talk-time {display: block; font-size: .8em; color: grey;}
+    article a, .talk-cont {word-wrap: break-word; word-break: break-all;}
+
+    @media print {
+        #talks {display: none}
+    }
+</style>
+{% end %}
+
+{% block navs %}
+{% module Template("_navs.html", menu='posts') %}
+{% end %}
+
+{% block main %}
+<div class="row">
+    <div class="span8">
+        <article class="article-wrap">
+            <div class="article-head">
+                <a href="/p/{{ post['post_id']}}" title="{{ post['post_descr'] and post['post_descr'] or post['post_title'] }}"><h3>{{ post['post_title'] }}</h3></a>
+                <p><small>标签：</small>
+                {% if post['post_id'] in ptids %}
+                <small>
+                    {% for term in ptids[post['post_id']] %}
+                    <a href="/t/{% raw url_escape(ptags[term['term_id']]['term_name']) %}"><span class="label label-success">{{ ptags[term['term_id']]['term_name'] }}</span></a>&nbsp;&nbsp;
+                    {% end %}
+                </small>
+                {% else %}
+                <small>无</small>
+                {% end %}
+                </p>
+            </div>
+            <div class="article-body">
+                {% raw post['post_content'] %}
+            </div>
+            <div class="article-foot">
+                <p>
+                {% if post['post_source'].strip() != '' %}<small>来源：{% raw post['post_source'] %}</small>{% end %}
+                {% if post['post_author'].strip() != '' and (post['user_id'] not in psers or psers[post['user_id']]['user_name'] != post['post_author']) %}{% if post['post_source'].strip() != '' %}<br>{% end %}<small>作者：{{ post['post_author'] }}</small>{% end %}
+                </p>
+                <p class="text-right">{% if post['user_id'] in psers %}<a href="/@{{ psers[post['user_id']]['user_name'] }}" target="_blank"><small>{{ psers[post['user_id']]['user_name'] }}</small></a>{% end %}<small> 发布于 {{ handler.timer().strftime('%Y-%m-%d %H:%M', handler.timer().localtime(post['post_ptms'])) }}</small></p>
+            </div>
+        </article>
+
+        <div>
+            <ul class="pager">
+                <li class="previous{% if not post_prev %} disabled{% end %}"><a href="{% if post_prev %}/p/{{ post_prev }}{% else %}javascript:;{% end %}">&larr; 上一篇</a></li>
+                <li><a href="javascript:;" title="点赞（+1）" class="award" data-post-id="{{ post['post_id'] }}" data-plus-ts="✓ 1">+ 1</a></li>
+                <li class="next{% if not post_next %} disabled{% end %}"><a href="{% if post_next %}/p/{{ post_next }}{% else %}javascript:;{% end %}">下一篇 &rarr;</a></li>
+            </ul>
+        </div>
+
+        <div id="talks">
+            <div id="list-talk">
+                <fieldset>
+                    <legend>
+                        文章评论
+                    </legend>
+                    <table id="rows-talk" class="table table-hover table-striped table-bordered" style="{% if not talks %}display:none{% end %}">
+                        <tbody>
+                        {% if talks %}
+                        {% for talk in talks %}
+                        <tr data-talk-id="{{ talk['talk_id'] }}">
+                            <td class="talk-user span2"><i class="icon-user"></i> {% if talk['user_id'] %}<a href="/@{{ talk['user_name'] }}" target="_blank">{{ talk['user_name'] }}</a>{% else %}{{ talk['user_name'] }}{% end %}<span class="talk-time">{{ handler.timer().strftime('%Y-%m-%d %H:%M', handler.timer().localtime(talk['talk_ctms'])) }}</span></td>
+                            <td class="talk-cont">{% raw escape(talk['talk_text']).replace('\n','\n<br>') %}</td>
+                        </tr>
+                        {% end %}
+                        {% end %}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="2" style="text-align:center;padding:0">
+                                    <a href="javascript:;" title="加载更多评论" class="load-more" style="display:block;width:100%;height:100%;">···</a>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </fieldset>
+            </div>
+
+            <form id="form-talk" class="form-horizontal" method="post" action="/voice?poid={{ post['post_id'] }}">
+                {% raw xsrf_form_html() %}
+                <fieldset>
+
+                    {% if handler.current_user %}
+                    <div class="control-group">
+                        <div class="controls">
+                            <label class="checkbox">
+                                <input type="checkbox" name="auth" value="1" checked="checked"> 以登录用户身份评论
+                            </label>
+                        </div>
+                    </div>
+                    {% end %}
+                    <div class="control-group">
+                        <label class="control-label" for="form-talk-name">你的名称：</label>
+                        <div class="controls">
+                            <input id="form-talk-name" type="text" name="name" class="span3" minlength="3" maxlength="64"{% if handler.current_user %} value="{{ handler.current_user['user_name'] }}" data-value="{{ handler.current_user['user_name'] }}" readonly{% end %} required>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="form-talk-mail">你的邮箱：</label>
+                        <div class="controls">
+                            <input id="form-talk-mail" type="email" name="mail" class="span3" minlength="6" maxlength="64"{% if handler.current_user %} value="{{ handler.current_user['user_mail'] }}" data-value="{{ handler.current_user['user_mail'] }}" readonly{% end %} required>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="form-talk-text">评论内容：</label>
+                        <div class="controls">
+                            <textarea id="form-talk-text" name="text" rows="8" class="input-block-level" required></textarea>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="controls">
+                            <div class="captcha span3" style="margin-left:0"></div>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <div class="controls">
+                            <button type="submit" class="btn btn-success input-large">提交评论</button>
+                            <span class="help-inline"></span>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+
+    {% include "../_side.html" %}
+</div>
+{% end %}
+
+{% block foot %}
+<script src="{{ handler.asset('gcp/src/run_prettify.js?skin=solarized-dark', vers = False) }}" type="text/javascript"></script>
+<script>
+    $(function() {
+        $('.pager .award').click(function() {
+            var i = $(this);
+            if (i.attr('disabled') != 'disabled') {
+                i.attr('disabled', 'disabled').parent().addClass('disabled');
+                $.post('/score?poid=' + i.data('post-id'), {'_xsrf': '{{ handler.xsrf_token }}'}, function() {
+                    i.text(i.data('plus-ts'));
+                }, 'json');
+            }
+        });
+
+        $('#form-talk [name=auth]').change(function() {
+            var c = $(this);
+            if (c.prop("checked")) {
+                $('#form-talk [name=name]').val($('#form-talk [name=name]').data('value')).prop('readonly', true);
+                $('#form-talk [name=mail]').val($('#form-talk [name=mail]').data('value')).prop('readonly', true);
+            } else {
+                $('#form-talk [name=name], #form-talk [name=mail]').prop("readonly", false);
+            }
+        });
+
+        $('#form-talk').submit(function() {
+            L.method.request({
+                element: $(this),
+                prepare: function(opts) {
+                    if (!opts.element.data('captcha-loaded')) {
+                        opts.element.data('captcha-loaded', true);
+                        L.widget.captcha.create(opts.element.find('.captcha'));
+
+                        return false;
+                    }
+
+                    opts.element.find('button[type=submit]').prop('disabled', true);
+                    opts.element.find('.control-group:has(button[type=submit]) .help-inline').hide();
+                },
+                respond: function(opts, resp) {
+                    var p = opts.element.find('.control-group:has(button[type=submit])');
+                    var t = p.find('.help-inline');
+
+                    if (resp.err) {
+                        p.removeClass('success').addClass('error')
+                        t.html('<strong>操作失败！</strong>' + resp.msg).fadeIn();
+
+                        L.widget.captcha.reload(opts.element.find('.captcha'));
+                        opts.element.find('button[type=submit]').prop('disabled', false);
+                    } else {
+                        p.removeClass('error').addClass('success')
+                        t.html('<strong>发送成功！</strong>' + resp.msg).fadeIn();
+                        if (resp.dat.did) {
+                            setTimeout(function() {location.reload();}, 3000);
+                        }
+                    }
+                }
+            });
+
+            return false;
+        });
+
+        {% if not talks %}
+        var talks = {
+            more: 1,
+            page: { qnty: 10, page: 0, lgth: 0 }
+        };
+
+        talks.list = function(list) {
+            if (list) {
+                for (i in list) {
+                    var talk = list[i];
+                    var html = '';
+                    html += '<tr data-talk-id="' + talk['talk_id'] + '">';
+                    html += '<td class="talk-user span2"><i class="icon-user"></i> ';
+                    if (talk['user_id']) {
+                        html += '<a href="/@' + L.method.htext(talk['user_name']) + '" target="_blank">' + L.method.htext(talk['user_name']) + '</a>';
+                    } else {
+                        html += L.method.htext(talk['user_name']);
+                    }
+                    html += '<span class="talk-time">' + L.method.date('Y-m-d H:i', talk['talk_ctms'] * 1000) + '</span>';
+                    html += '</td>';
+                    html += '<td class="talk-cont">' + L.method.nl2br(L.method.htext(talk['talk_text']), "\n<br>") + '</td>';
+                    html += '</tr>';
+
+                    $('#rows-talk tbody').append(html);
+                }
+
+                $('#rows-talk').show();
+            }
+        };
+
+        talks.load = function(page, qnty) {
+            L.method.request({
+                _action: "/talks.json?poid={{ post['post_id'] }}&page=" + page + "&qnty=" + qnty,
+                prepare: function() {talks.more = 0;},
+                failure: function() {talks.more = 1;},
+                success: function(opts, resp) {
+                    if (!resp.err && resp.dat && resp.dat.talks && resp.dat.talks.length) {
+                        talks.list(resp.dat.talks);
+                    }
+
+                    if (!resp.err && resp.dat && resp.dat.pager) {
+                        talks.page.page = parseInt(resp.dat.pager['page']);
+                        talks.page.qnty = parseInt(resp.dat.pager['qnty']);
+                        talks.page.lgth = parseInt(resp.dat.pager['lgth']);
+                    }
+
+                    if (talks.page.lgth < talks.page.qnty) {
+                        $('#rows-talk tfoot').remove();
+                        talks.more = 0;
+                    } else {
+                        $('#rows-talk tfoot').show();
+                        talks.more = 1;
+                    }
+                }
+            });
+        };
+
+        $('#rows-talk .load-more').click(function() {
+            if (talks.more) {
+                talks.load(talks.page.page + 1, talks.page.qnty);
+            }
+
+            return false;
+        }).click();
+
+        {% end %}
+    });
+</script>
+{% end %}

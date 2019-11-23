@@ -1,0 +1,23 @@
+{% if posts %}
+<div class="article-list">
+    {% for post in posts %}
+    <article class="article-wrap">
+        <div class="article-head">
+            <a href="/geci/{{ post['post_id']}}" title="{{ post['post_title'] }}"><h4>{{ post['post_title'] }}</h4></a>
+        </div>
+        <div class="article-body">
+            {% raw post['post_summary'] %}
+        </div>
+        <div class="article-foot">
+            <p class="text-right"><a href="/geci/{{ post['post_id']}}" title="{{ post['post_title'] }}">全文 &raquo; </a></p>
+        </div>
+    </article>
+    {% end %}
+</div>
+{% else %}
+<div class="alert alert-block text-center">
+    <strong>没有发现内容</strong>
+</div>
+{% end %}
+
+{% module Template("_page.html", pager=pager) %}
