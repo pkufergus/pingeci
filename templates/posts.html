@@ -2,6 +2,9 @@
 
 {% block title %}{{ track }}{% if track != '' %} - {% end %}{{ handler.get_runtime_conf('title') }}{% if handler.get_runtime_conf('topic') %} &middot; {{ handler.get_runtime_conf('topic') }}{% end %}{% end %}
 
+{% block navs %}
+{% module Template("_navs.html", menu='posts') %}
+{% end %}
 
 {% block main %}
 <div class="row">

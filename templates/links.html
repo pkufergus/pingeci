@@ -1,0 +1,33 @@
+{% extends "_base.html" %}
+
+{% block title %}友情链接 - {{ handler.get_runtime_conf('title') }}{% end %}
+
+{% block head %}
+<style>
+    @media (min-width: 768px) {
+        .friend-links {
+            border-left: 1px solid #eee;
+        }
+    }
+</style>
+{% end %}
+
+{% block navs %}
+{% module Template("_navs.html", menu='links') %}
+{% end %}
+
+{% block main %}
+<div class="row">
+    <div class="span2" style="margin-bottom:20px">
+        <a class="btn btn-success input-block-level" href="/apply?from=links">提交链接</a>
+    </div>
+    <div class="span8">
+        <ul class="nav nav-pills friend-links">
+            {% for link in links %}
+            <li><a target="_blank" href="{{ link['link_href'] }}"{% if link['link_desp'] %} title="{{ link['link_desp'] }}"{% end %}>{{ link['link_name'] }}</a></li>
+            {% end %}
+            <li><a target="_blank" href="/">{{ handler.get_runtime_conf('title') }}</a></li>
+        </ul>
+    </div>
+</div>
+{% end %}

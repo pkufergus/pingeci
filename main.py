@@ -23,6 +23,8 @@ from api.artisthandler import ArtistHandler
 from api.topartistshandler import TopArtistsHandler
 
 from ctrls.posts import PostsCtrl
+from ctrls.about import *
+from ctrls.links import *
 
 from etc import etc
 
@@ -30,6 +32,8 @@ from etc import etc
 application = tornado.web.Application(
     handlers=[(r'/', PostsCtrl),
               (r'/s', PostsCtrl),
+              (r'/about', AboutCtrl),
+              (r'/links', LinksCtrl),
               (r'/posts', PostsCtrl),
               (r'/song', SongHandler),
               (r'/artist', ArtistHandler),

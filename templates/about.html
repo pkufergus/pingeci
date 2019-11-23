@@ -1,0 +1,101 @@
+{% extends "_base.html" %}
+
+{% block title %}关于我们 - {{ handler.get_runtime_conf('title') }}{% end %}
+
+{% block head %}
+<style>
+    #form-email .control-label {
+        text-align: left;
+    }
+</style>
+{% end %}
+
+{% block navs %}
+{% module Template("_navs.html", menu='about') %}
+{% end %}
+
+{% block main %}
+<div class="row">
+    <div class="span8">
+        {% raw handler.get_runtime_conf('about') %}
+        <div id="email" style="padding-top: 80px">
+            <form id="form-email" method="post" action="/email" class="form-horizontal">
+                {% raw xsrf_form_html() %}
+                <fieldset>
+                    <legend>留言反馈</legend>
+                    <div class="control-group">
+                        <label class="control-label" for="form-email-name">你的名称：</label>
+                        <div class="controls">
+                            <input id="form-email-name" type="text" name="name" class="span3" minlength="3" maxlength="64" required>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="form-email-mail">你的邮箱：</label>
+                        <div class="controls">
+                            <input id="form-email-mail" type="email" name="mail" class="span3" minlength="6" maxlength="64" required>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="form-email-text">留言反馈：</label>
+                        <div class="controls">
+                            <textarea id="form-email-text" name="text" rows="8" class="span5" required></textarea>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <div class="controls">
+                            <div class="captcha span3" style="margin-left:0"></div>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <div class="controls">
+                            <button type="submit" class="btn btn-success input-large">发送内容</button>
+                            <span class="help-inline"></span>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>
+{% end %}
+
+{% block foot %}
+<script>
+    $(function(){
+        $('#form-email').submit(function() {
+            L.method.request({
+                element: $(this),
+                prepare: function(opts) {
+                    if (!opts.element.data('captcha-loaded')) {
+                        opts.element.data('captcha-loaded', true);
+                        L.widget.captcha.create(opts.element.find('.captcha'));
+
+                        return false;
+                    }
+
+                    opts.element.find('button[type=submit]').prop('disabled', true);
+                    opts.element.find('.control-group:has(button[type=submit]) .help-inline').hide();
+                },
+                respond: function(opts, resp) {
+                    var p = opts.element.find('.control-group:has(button[type=submit])');
+                    var t = p.find('.help-inline');
+
+                    if (resp.err) {
+                        p.removeClass('success').addClass('error')
+                        t.html('<strong>操作失败！</strong>请重试或尝试用邮件跟我们联系').fadeIn();
+                    } else {
+                        p.removeClass('error').addClass('success')
+                        t.html('<strong>发送成功！</strong>').fadeIn();
+                    }
+
+                    L.widget.captcha.reload(opts.element.find('.captcha'));
+                    opts.element.find('button[type=submit]').prop('disabled', false);
+                }
+            });
+
+            return false;
+        });
+    });
+</script>
+{% end %}

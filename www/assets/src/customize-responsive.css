@@ -1,0 +1,13 @@
+body {
+    font-family: "Helvetica Neue","Lantinghei SC","Hiragino Sans GB",STHeiti,"Microsoft Yahei",\5FAE\8F6F\96C5\9ED1,"WenQuanYi Micro Hei",Tahoma,sans-serif;
+}
+
+strong, dt, b, h1, h2, h3, h4, h5, h6, .close, .label, .badge, .table th, .nav-header {
+    font-weight: 600;
+}
+
+@media (max-width: 480px) {
+    .panel-user-name {
+        display: none;
+    }
+}

@@ -15,12 +15,12 @@ INSERT INTO confs (conf_name, conf_vals, conf_ctms) VALUES ('topic', '品歌词'
 INSERT INTO confs (conf_name, conf_vals, conf_ctms) VALUES ('brand', '品歌词<br>pingeci.com', 1391145703);
 INSERT INTO confs (conf_name, conf_vals, conf_ctms) VALUES ('built', '设计和开发者 <a href="http://pingeci.com/@song" target="_blank">Song</a>.', 1391146099);
 INSERT INTO confs (conf_name, conf_vals, conf_ctms) VALUES ('power', '&copy;2019 <a href="http://pingeci.com/">pingeci.com</a>.', 1391147893);
-INSERT INTO confs (conf_name, conf_vals, conf_ctms) VALUES ('menus', '[{"menu":"posts","text": "活动日志", "href": "/"},{"menu":"about","text": "关于我们", "href": "/about"},{"menu":"links","text": "友情链接", "href": "/links"}]', 1391147894);
+INSERT INTO confs (conf_name, conf_vals, conf_ctms) VALUES ('menus', '[{"menu":"posts","text": "歌曲排名榜", "href": "/"},{"menu":"about","text": "关于我们", "href": "/about"},{"menu":"links","text": "友情链接", "href": "/links"}]', 1391147894);
 INSERT INTO confs (conf_name, conf_vals, conf_ctms) VALUES ('links', '[{"text": "友情链接", "href": "/links"},{"text": "关于我们", "href": "/about"},{"text": "留言反馈", "href": "/about#email"}]', 1391147894);
 INSERT INTO confs (conf_name, conf_vals, conf_ctms) VALUES ('flips', '[{"type": "image", "file": "/www/assets/img/1.jpg", "head": "杨丞琳 最新单曲", "body": "致在迷惘中寻找答案的每个存在"}, {"type": "image", "file": "/www/assets/img/2.jpg", "head": "我爱你 这是最好的安排", "body": "电视剧原声音乐专辑"}]', 1391145023);
 INSERT INTO confs (conf_name, conf_vals, conf_ctms) VALUES ('slabs', '{"head": "", "body": ""}', 1391145024);
 INSERT INTO confs (conf_name, conf_vals, conf_ctms) VALUES ('stats', '<script></script>', 1391148393);
-INSERT INTO confs (conf_name, conf_vals, conf_ctms) VALUES ('about', '品歌词网是分享歌曲和品味歌词的网站。', 1391148485);
+INSERT INTO confs (conf_name, conf_vals, conf_ctms) VALUES ('about', '品歌词网是分享歌曲和欣赏歌词的网站，整理了网上一些歌词和歌曲，以及网友对歌曲的评论。如果您有什么好的想法要告诉我们，或者希望与我们交换链接，我们都表示荣幸以及并对您满怀感激!', 1391148485);
 INSERT INTO confs (conf_name, conf_vals, conf_ctms) VALUES ('qrimg', '/www/assets/img/pingeci.com.png', 1391149550);
 INSERT INTO confs (conf_name, conf_vals, conf_ctms) VALUES ('mailx', '{"smtp_able": 1, "smtp_host": "smtp.gmail.com", "smtp_port": 587, "smtp_from": "name<name@gmail.com>", "smtp_user": "", "smtp_pswd": ""}', 1391149551);
 INSERT INTO confs (conf_name, conf_vals, conf_ctms) VALUES ('mails', '"pkufergus@qq.com"', 1391152188);
