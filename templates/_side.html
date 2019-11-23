@@ -6,4 +6,75 @@
         </div>
     </form>
 
+    {% if terms_top %}
+    <ul class="inline">
+        {% for val in terms_top %}
+        <li><a href="/t/{{ url_escape(val['term_name']) }}">{{ val['term_name'] }}</a></li>
+        {% end %}
+    </ul>
+    {% end %}
+
+    {% if slabs_top %}
+    {% for val in slabs_top %}
+    {% if val['head'] != "" or val['body'] != "" %}
+    <div class="nav board" data-title="{{ val['head'] }}">
+        {% raw val['body'] %}
+    </div>
+    {% end %}
+    {% end %}
+    {% end %}
+
+    {% if posts_top %}
+    <ul class="nav nav-tabs nav-stacked">
+        <li class="active"><a href="javascript:;">置顶文章</a></li>
+        {% for val in posts_top %}
+        <li><a class="texted" title="{{ val['post_descr'] and val['post_descr'] or val['post_title'] }}" href="/p/{{ val['post_id']}}">{{ val['post_title'] }}</a></li>
+        {% end %}
+    </ul>
+    {% end %}
+
+    {% if posts_hot %}
+    <ul class="nav nav-tabs nav-stacked">
+        <li class="active"><a href="javascript:;">热门文章</a></li>
+        {% for val in posts_hot %}
+        <li><a class="texted" title="{{ val['post_descr'] and val['post_descr'] or val['post_title'] }}" href="/p/{{ val['post_id']}}">{{ val['post_title'] }}</a></li>
+        {% end %}
+    </ul>
+    {% end %}
+
+    {% if posts_new %}
+    <ul class="nav nav-tabs nav-stacked">
+        <li class="active"><a href="javascript:;">最新文章</a></li>
+        {% for val in posts_new %}
+        <li><a class="texted" title="{{ val['post_descr'] and val['post_descr'] or val['post_title'] }}" href="/p/{{ val['post_id']}}">{{ val['post_title'] }}</a></li>
+        {% end %}
+    </ul>
+    {% end %}
+
+    {% if posts_rel %}
+    <ul class="nav nav-tabs nav-stacked">
+        <li class="active"><a href="javascript:;">相关文章</a></li>
+        {% for val in posts_rel %}
+        <li><a class="texted" title="{{ val['post_descr'] and val['post_descr'] or val['post_title'] }}" href="/p/{{ val['post_id']}}">{{ val['post_title'] }}</a></li>
+        {% end %}
+    </ul>
+    {% end %}
+
+    {% if talks_new %}
+    <ul class="nav nav-tabs nav-stacked">
+        <li class="active"><a href="javascript:;">最新评论</a></li>
+        {% for val in talks_new %}
+        <li><a class="texted" title="{{ val['talk_text'] }}" href="/p/{{ val['post_id']}}#talks">{{ val['talk_text'] }}</a></li>
+        {% end %}
+    </ul>
+    {% end %}
+
+    {% if links_top %}
+    <ul class="nav nav-tabs nav-stacked">
+        <li class="active"><a href="javascript:;">友情链接</a></li>
+        {% for val in links_top %}
+        <li><a class="texted" target="_blank" href="{{ val['link_href'] }}"{% if val['link_desp'] %} title="{{ val['link_desp'] }}"{% end %}>{{ val['link_name'] }}</a></li>
+        {% end %}
+    </ul>
+    {% end %}
 </div>

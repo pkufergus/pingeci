@@ -8,19 +8,19 @@
 -- );
 
 
-INSERT INTO confs (conf_name, conf_vals, conf_ctms) VALUES ('descr', '一个简单的科技和生活主题的网站', 1391144164);
-INSERT INTO confs (conf_name, conf_vals, conf_ctms) VALUES ('keyws', '螺壳网 螺壳 科技 生活', 1391144187);
-INSERT INTO confs (conf_name, conf_vals, conf_ctms) VALUES ('title', '螺壳网', 1391144889);
-INSERT INTO confs (conf_name, conf_vals, conf_ctms) VALUES ('topic', '宅生活', 1391144890);
-INSERT INTO confs (conf_name, conf_vals, conf_ctms) VALUES ('brand', '螺壳网<br>Luokr.com', 1391145703);
-INSERT INTO confs (conf_name, conf_vals, conf_ctms) VALUES ('built', 'Designed and built with all the love in the world by <a href="http://luokr.com/@Alvan" target="_blank">Alvan</a>.', 1391146099);
+INSERT INTO confs (conf_name, conf_vals, conf_ctms) VALUES ('descr', '品歌词，品人生，搜索歌词，查询歌词', 1391144164);
+INSERT INTO confs (conf_name, conf_vals, conf_ctms) VALUES ('keyws', '歌词网 歌词 歌曲 生活', 1391144187);
+INSERT INTO confs (conf_name, conf_vals, conf_ctms) VALUES ('title', '品歌词网', 1391144889);
+INSERT INTO confs (conf_name, conf_vals, conf_ctms) VALUES ('topic', '品歌词', 1391144890);
+INSERT INTO confs (conf_name, conf_vals, conf_ctms) VALUES ('brand', '品歌词<br>pingeci.com', 1391145703);
+INSERT INTO confs (conf_name, conf_vals, conf_ctms) VALUES ('built', 'Designed and built with all the love in the world by <a href="http://pingeci.com/@song" target="_blank">Song</a>.', 1391146099);
 INSERT INTO confs (conf_name, conf_vals, conf_ctms) VALUES ('power', '&copy;2013 <a href="http://luokr.com/">luokr.com</a>.', 1391147893);
-INSERT INTO confs (conf_name, conf_vals, conf_ctms) VALUES ('menus', '{"menu":"posts","text": "活动日志", "href": "/"},{"menu":"about","text": "关于我们", "href": "/about"},{"menu":"links","text": "友情链接", "href": "/links"}', 1391147894);
+INSERT INTO confs (conf_name, conf_vals, conf_ctms) VALUES ('menus', '[{"menu":"posts","text": "活动日志", "href": "/"},{"menu":"about","text": "关于我们", "href": "/about"},{"menu":"links","text": "友情链接", "href": "/links"}]', 1391147894);
 INSERT INTO confs (conf_name, conf_vals, conf_ctms) VALUES ('links', '{"text": "", "href": ""}', 1391147894);
 INSERT INTO confs (conf_name, conf_vals, conf_ctms) VALUES ('flips', '{"type": "image", "file": "/assets/img/1.png", "head": "Hello World", "body": "Code is Poetry, Life is Sweet."}', 1391145023);
 INSERT INTO confs (conf_name, conf_vals, conf_ctms) VALUES ('slabs', '{"head": "", "body": ""}', 1391145024);
 INSERT INTO confs (conf_name, conf_vals, conf_ctms) VALUES ('stats', '<script></script>', 1391148393);
-INSERT INTO confs (conf_name, conf_vals, conf_ctms) VALUES ('about', '螺壳网目前只是一个简单的科技和生活主题的网站。', 1391148485);
+INSERT INTO confs (conf_name, conf_vals, conf_ctms) VALUES ('about', '品歌词网是分享歌曲和品味歌词的网站。', 1391148485);
 INSERT INTO confs (conf_name, conf_vals, conf_ctms) VALUES ('qrimg', '/assets/img/luokr.com.qrc.png', 1391149550);
 INSERT INTO confs (conf_name, conf_vals, conf_ctms) VALUES ('mailx', '{"smtp_able": 1, "smtp_host": "smtp.gmail.com", "smtp_port": 587, "smtp_from": "name<name@gmail.com>", "smtp_user": "", "smtp_pswd": ""}', 1391149551);
 INSERT INTO confs (conf_name, conf_vals, conf_ctms) VALUES ('mails', '"a@luokr.com"', 1391152188);

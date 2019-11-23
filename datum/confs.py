@@ -24,9 +24,10 @@ class ConfsDatum(Datum):
                 ret = ret[0]
             print("size={} {}".format(len(ret), ret))
             if ret:
-                self._cache[name] = ret[0]
+                self._cache[name] = ret[0][0]
             else:
                 self._cache[name] = None
+            print("name={} value={}".format(name, self._cache[name]))
         return self._cache[name]
 
     def exists(self, name):

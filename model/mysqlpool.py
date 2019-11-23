@@ -12,7 +12,7 @@ class MysqlPool(object):
     charset = 'utf8'
 
     pool = None
-    limit_count = 30  #limit
+    limit_count = 3  #limit
 
     def __init__(self):
         self.pool = PooledDB(MySQLdb, self.limit_count, host=self.host, user=self.user, passwd=self.pasword, db=self.db,

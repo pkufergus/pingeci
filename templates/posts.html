@@ -1,14 +1,14 @@
 {% extends "_base.html" %}
 
-<!--{% block title %}{{ track }}{% if track != '' %} - {% end %}{{ handler.get_runtime_conf('title') }}{% if handler.get_runtime_conf('topic') %} &middot; {{ handler.get_runtime_conf('topic') }}{% end %}{% end %}-->
+{% block title %}{{ track }}{% if track != '' %} - {% end %}{{ handler.get_runtime_conf('title') }}{% if handler.get_runtime_conf('topic') %} &middot; {{ handler.get_runtime_conf('topic') }}{% end %}{% end %}
 
 
 {% block main %}
 <div class="row">
-    <!--<div class="span8">-->
-        <!--{% set flips = handler.jsons(handler.get_runtime_conf('flips')) %}-->
-    <!--</div>-->
+    <div class="span8">
+        {% set flips = handler.jsons(handler.get_runtime_conf('flips')) %}
+    </div>
     
-    <!--{% include "_side.html" %}-->
+    {% include "_side.html" %}
 </div>
 {% end %}

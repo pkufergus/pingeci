@@ -28,7 +28,8 @@ from etc import etc
 
 
 application = tornado.web.Application(
-    handlers=[(r'/', MainHandler),
+    handlers=[(r'/', PostsCtrl),
+              (r'/s', PostsCtrl),
               (r'/posts', PostsCtrl),
               (r'/song', SongHandler),
               (r'/artist', ArtistHandler),

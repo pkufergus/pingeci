@@ -25,33 +25,39 @@
 
 <body data-exts-scrollup="1" data-spy="scroll">
 <header class="header topfix">
-    <!--<nav class="navbar navbar-fixed-top">-->
-        <!--<div class="navbar-inner">-->
-            <!--<button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">-->
-                <!--<span class="icon-bar"></span>-->
-                <!--<span class="icon-bar"></span>-->
-                <!--<span class="icon-bar"></span>-->
-            <!--</button>-->
-            <!--<div class="container">-->
-                <!--<a class="brand" href="/">{% raw handler.get_runtime_conf('brand') %}</a>-->
-                <!--{% if handler.current_user %}-->
-                <!--<ul class="nav nav-tool-bar pull-right">-->
-                    <!--<li><a href="/@{{url_escape(handler.current_user['user_name'])}}"><i class="icon-user"></i><span class="panel-user-name"> {{ handler.current_user['user_name'] }}</span></a></li>-->
-                    <!--<li><a href="/shell"><i class="icon-cog"></i></a></li>-->
-                    <!--<li><a href="/leave"><i class="icon-off"></i></a></li>-->
-                <!--</ul>-->
-                <!--{% end %}-->
+    <nav class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+            <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <div class="container">
+                <a class="brand" href="/">{% raw handler.get_runtime_conf('brand') %}</a>
+                {% if handler.current_user %}
+                <ul class="nav nav-tool-bar pull-right">
+                    <li><a href="/@{{url_escape(handler.current_user['user_name'])}}"><i class="icon-user"></i><span class="panel-user-name"> {{ handler.current_user['user_name'] }}</span></a></li>
+                    <li><a href="/shell"><i class="icon-cog"></i></a></li>
+                    <li><a href="/leave"><i class="icon-off"></i></a></li>
+                </ul>
+                {% end %}
 
-                <!--<div class="nav-collapse collapse">-->
-                    <!--<ul class="nav">-->
-                        <!--{% block navs %}{% end %}-->
-                    <!--</ul>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</nav>-->
+                <div class="nav-collapse collapse">
+                    <ul class="nav">
+                        {% block navs %}{% end %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
 </header>
 
+<main class="vessel">
+    <div class="container">
+        {% block tips %}{% module Template("_tips.html", tips = handler.jsons(handler.get_runtime_conf('notes'))) %}{% end %}
+        {% block main %}{% end %}
+    </div>
+</main>
 
 
 <footer class="footer">
