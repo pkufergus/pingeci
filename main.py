@@ -22,7 +22,7 @@ from api.searchhandler import SearchHandler
 from api.artisthandler import ArtistHandler
 from api.topartistshandler import TopArtistsHandler
 
-from ctrls.posts import PostsCtrl
+from ctrls.posts import *
 from ctrls.about import *
 from ctrls.links import *
 
@@ -32,6 +32,7 @@ from etc import etc
 application = tornado.web.Application(
     handlers=[(r'/', PostsCtrl),
               (r'/s', PostsCtrl),
+              (r'/geci/([1-9][0-9]{1,100})', PostCtrl),
               (r'/about', AboutCtrl),
               (r'/links', LinksCtrl),
               (r'/posts', PostsCtrl),

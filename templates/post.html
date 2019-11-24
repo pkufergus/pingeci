@@ -1,4 +1,4 @@
-{% extends "../_base.html" %}
+{% extends "_base.html" %}
 
 {% block title %}{{ post['post_title'] }} - {{ handler.get_runtime_conf('title') }}{% end %}
 {% block descr %}{{ post['post_descr'] and post['post_descr'] or post['post_title'] }}{% end %}
@@ -29,28 +29,21 @@
     <div class="span8">
         <article class="article-wrap">
             <div class="article-head">
-                <a href="/p/{{ post['post_id']}}" title="{{ post['post_descr'] and post['post_descr'] or post['post_title'] }}"><h3>{{ post['post_title'] }}</h3></a>
-                <p><small>标签：</small>
-                {% if post['post_id'] in ptids %}
-                <small>
-                    {% for term in ptids[post['post_id']] %}
-                    <a href="/t/{% raw url_escape(ptags[term['term_id']]['term_name']) %}"><span class="label label-success">{{ ptags[term['term_id']]['term_name'] }}</span></a>&nbsp;&nbsp;
+                <a href="/geci/{{ post['post_id']}}" title="{{ post['post_descr'] and post['post_descr'] or post['post_title'] }}"><h3>{{ post['post_title'] }}</h3></a>
+                <p><small>歌手：</small>
+                    {% if post['artist_name'] and post['artist_id'] %}
+                    <small><a href="/geshou/{% raw url_escape(post['artist_id']) %}"><span class="label label-success">{{ post['artist_name'] }}</span></a>&nbsp;&nbsp;</small>
                     {% end %}
-                </small>
-                {% else %}
-                <small>无</small>
-                {% end %}
                 </p>
             </div>
             <div class="article-body">
                 {% raw post['post_content'] %}
             </div>
             <div class="article-foot">
-                <p>
-                {% if post['post_source'].strip() != '' %}<small>来源：{% raw post['post_source'] %}</small>{% end %}
-                {% if post['post_author'].strip() != '' and (post['user_id'] not in psers or psers[post['user_id']]['user_name'] != post['post_author']) %}{% if post['post_source'].strip() != '' %}<br>{% end %}<small>作者：{{ post['post_author'] }}</small>{% end %}
+                <p class="text-right">
+                {% if post['artist_name'] and post['artist_name'].strip() != '' %}<small>歌手：</small>{% end %}
+                {% if post['artist_name'] and post['artist_id'] %}<a href="/geshou/{% raw url_escape(post['artist_id']) %}" target="_blank"><small> {{ post['artist_name'] }}</small></a>{% end %}<small></small>
                 </p>
-                <p class="text-right">{% if post['user_id'] in psers %}<a href="/@{{ psers[post['user_id']]['user_name'] }}" target="_blank"><small>{{ psers[post['user_id']]['user_name'] }}</small></a>{% end %}<small> 发布于 {{ handler.timer().strftime('%Y-%m-%d %H:%M', handler.timer().localtime(post['post_ptms'])) }}</small></p>
             </div>
         </article>
 
@@ -138,7 +131,7 @@
         </div>
     </div>
 
-    {% include "../_side.html" %}
+    {% include "_side.html" %}
 </div>
 {% end %}
 
