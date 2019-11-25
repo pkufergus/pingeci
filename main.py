@@ -25,6 +25,7 @@ from api.topartistshandler import TopArtistsHandler
 from ctrls.posts import *
 from ctrls.about import *
 from ctrls.links import *
+from ctrls.shell.index import *
 
 from etc import etc
 
@@ -32,7 +33,8 @@ from etc import etc
 application = tornado.web.Application(
     handlers=[(r'/', PostsCtrl),
               (r'/s', PostsCtrl),
-              (r'/geci/([1-9][0-9]{1,100})', PostCtrl),
+              (r'/geci/([1-9][0-9]{1,50})', PostCtrl),
+              (r'/geshou/([1-9][0-9]{1,50})', Shell_IndexCtrl),
               (r'/about', AboutCtrl),
               (r'/links', LinksCtrl),
               (r'/posts', PostsCtrl),

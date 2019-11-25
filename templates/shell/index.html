@@ -1,0 +1,42 @@
+{% extends "_base.html" %}
+
+{% block title %}{{ user['user_name'] }}{% if user['user_name'] %} ({{ user['user_name'] }}){% end %} - {{ handler.get_runtime_conf('title') }}{% end %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ handler.asset('src/nprogress.min.css') }}">
+<style>
+    .lines {
+        padding: 16px;
+    }
+
+    .title {
+        font-weight: normal;
+    }
+</style>
+{% end %}
+
+{% block main %}
+<div class="row">
+    <div class="span3 offset1">
+        {% module Template("shell/_side.html", user = user) %}
+    </div>
+    <div class="span6">
+        <div class="board" id="shell-index-posts">
+            {% module Template("shell/index/posts.html", pager = pager, posts = posts) %}
+        </div>
+    </div>
+</div>
+{% end %}
+
+{% block foot %}
+<script src="{{ handler.asset('src/jquery.pjax.min.js') }}"></script>
+<script src="{{ handler.asset('src/nprogress.min.js') }}"></script>
+<script>
+    $(function(){
+        $('#shell-index-posts').pjax('a[data-pjax]', '#shell-index-posts');
+
+        $(document).on('pjax:start', function() { NProgress.start(); });
+        $(document).on('pjax:end',   function() { NProgress.done();  });
+    });
+</script>
+{% end %}

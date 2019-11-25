@@ -50,11 +50,19 @@ def get_artist(aid):
     songs=row[2]
     return name, songs
 
-def get_artist_songs(aid):
+def get_artist_songs(aid, limit = 1000):
     name, songids = get_artist(aid)
     sids = songids.split(";")
     songs = []
-    for sid in sids:
+    for sid in sids[:limit]:
+        song = get_song(sid)
+        songs.append(song)
+    return songs
+
+def get_artist_songs_from_ids(songids, limit = 1000):
+    sids = songids.split(";")
+    songs = []
+    for sid in sids[:limit]:
         song = get_song(sid)
         songs.append(song)
     return songs

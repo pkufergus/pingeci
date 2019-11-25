@@ -1,0 +1,10 @@
+<div class="text-center">
+    {% if 'user_logo' in user and user['user_logo'] %}
+    <img src="{{ user['user_logo'] }}" alt="{{ user['user_name'] }}" class="img-rounded">
+    {% end %}
+</div>
+<h2><p class="named block"><span class="named-title">{{ user['user_name'] }}</span></p></h2>
+
+{% if 'user_meta' in user and user['user_meta'] %}
+<p class="muted block coded" style="font-size:13px">{% raw handler.utils().build_links(escape(user['user_meta']).replace('\n','\n<br>')) %}</p>
+{% end %}

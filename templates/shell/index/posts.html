@@ -1,0 +1,22 @@
+<ul class="unstyled">
+    {% if posts %}
+    {% for post in posts %}
+    <li class="lines clearfix">
+    <a target="_blank" title="{{ post['post_title'] }}" href="/geci/{{ post['post_id']}}">
+        <h5 class="title">{{ post['post_title'] }}</h5>
+    </a>
+    <small>{% if post['post_title'] != post['post_descr'] %}{% raw escape(post['post_descr']).replace('\n','\n') %}{% end %}</small>
+    </li>
+    {% end %}
+    {% else %}
+    <li class="text-center">没有发现记录</li>
+    {% end %}
+</ul>
+<div class="pagination pagination-centered">
+    <ul>
+        <li{% if pager['page'] <= 1 %} class="disabled"><a href="javascript:;">首页</a>{% else %}><a data-pjax="1" href="{% raw handler.tourl(handler.merge_query({}, ['page'])) %}">首页</a>{% end %}</li>
+        <li{% if pager['page'] <= 1 %} class="disabled"><a href="javascript:;">&lt;</a>{% else %}><a data-pjax="1" href="{% if pager['page'] > 2 %}{% raw handler.tourl(handler.merge_query({'page':pager['page']-1})) %}{% else %}{% raw handler.tourl(handler.merge_query({}, ['page'])) %}{% end %}">&lt;</a>{% end %}</li>
+        <li class="active disabled"><a href="javascript:;">{{ pager['page'] }}</a></li>
+        {% if not pager['lgth'] %}<li class="disabled"><a href="javascript:;">&gt;</a></li>{% else %}<li><a data-pjax="1" href="{% raw handler.tourl(handler.merge_query({'page':pager['page']+1})) %}">&gt;</a></li>{% end %}
+    </ul>
+</div>

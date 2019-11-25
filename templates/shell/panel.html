@@ -1,0 +1,106 @@
+{% extends "_base.html" %}
+
+{% block title %}帐号信息 - {{ handler.get_runtime_conf('title') }}{% end %}
+
+{% block navs %}
+{% module Template("_navs.html", menu='') %}
+{% end %}
+
+{% block main %}
+<div class="row">
+    <div class="span8 offset1">
+        <ul class="nav nav-tabs">
+            {% module Template("shell/_tabs.html", menu='panel') %}
+        </ul>
+    </div>
+</div>
+
+<div class="row">
+    <div class="span10">
+        <div class="row">
+            <div class="span3 offset1 pull-right" style="padding-bottom:10px">
+                <img class="avatar" id="form-avatar-file-view" alt="{% if handler.current_user and handler.current_user['user_logo'] %}{{ handler.current_user['user_logo'] }}{% else %}{{ handler.asset('img/b.gif') }}{% end %}" src="{% if handler.current_user and handler.current_user['user_logo'] %}{{ handler.current_user['user_logo'] }}{% else %}{{ handler.asset('img/b.gif') }}{% end %}">
+                <button type="button" class="btn" onclick="document.getElementById('form-avatar-file').click();">选择头像</button>
+            </div>
+
+            <div class="span5 offset1">
+                <form class="form-horizontal request-ajax-form" method="post" autocomplete="off">
+                    {% raw xsrf_form_html() %}
+                    <input id="form-avatar-file" type="file" name="logo" accept="image/*" style="display:none">
+
+                    <div class="control-group">
+                        <label class="control-label" for="inputName">用户名称：</label>
+                        <div class="controls">
+                            <input class="span3" type="text" id="inputName" value="{{ user['user_name'] }}" required disabled>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="inputMail">联系邮箱：</label>
+                        <div class="controls">
+                            <input class="span3" type="email" id="inputMail" name="mail" value="{{ user['user_mail'] }}" maxlength="64" required>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="inputSign">个人签名：</label>
+                        <div class="controls">
+                            <input class="span3" type="text" id="inputSign" name="sign" value="{{ user['user_sign'] }}" maxlength="128">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="inputMeta">社会标签：</label>
+                        <div class="controls">
+                            <textarea class="span3" id="inputMeta" name="meta">{{ user['user_meta'] }}</textarea>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label class="control-label" for="inputPswd">当前密码：</label>
+                        <div class="controls">
+                            <input class="span3" type="password" id="inputPswd" name="pswd" minlength="6">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="inputNpwd">新的密码：</label>
+                        <div class="controls">
+                            <input class="span3" type="password" id="inputNpwd" name="npwd" minlength="6">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="inputRpwd">确认密码：</label>
+                        <div class="controls">
+                            <input class="span3" type="password" id="inputRpwd" name="rpwd" minlength="6">
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <div class="controls">
+                            <button type="submit" class="btn btn-success span3" style="margin-left:0">提交更新</button>
+                            <!-- <button type="reset" class="btn span3" style="margin-left:0; margin-top:10px;" onclick="document.getElementById('form-avatar-file-view').src=document.getElementById('form-avatar-file-view').alt;">重置</button> -->
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% end %}
+
+{% block foot %}
+<script>
+    $(function() {
+        $("#form-avatar-file").change(function(e) {
+            var file = (e.target.files || e.dataTransfer.files)[0];
+            if (file)
+            {
+                var reader = new FileReader();
+                reader.onload = function()
+                {
+                    $("#form-avatar-file-view").attr("src", this.result);
+                };
+
+                reader.readAsDataURL(file);
+            }
+        });
+    });
+</script>
+{% end %}
