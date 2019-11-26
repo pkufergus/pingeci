@@ -173,15 +173,15 @@ kbd {
     margin-top: 50px;
 }
 .named>.named-title {
-    background-color: #F5F5F5;
-    border: 1px solid #DDDDDD;
+    background-color: #F1F2F3;
+    border: 0px solid #DDDDDD;
     border-bottom: 0;
     border-radius: 4px 4px 0 0;
-    color: #9DA0A4;
-    font-size: 12px;
-    font-weight: 600;
+    color: #f8b9b7;
+    font-size: 16px;
+    font-weight: 500;
     left: 0;
-    padding: 3px 7px;
+    padding: 6px 3px;
     position: absolute;
     bottom: 0;
 }

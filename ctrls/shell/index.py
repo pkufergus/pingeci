@@ -33,8 +33,19 @@ class Shell_IndexCtrl(ShellCtrl):
         if posts:
             pager['lgth'] = len(posts)
 
+        posts_top = []
+        posts_new = []
+        posts_rel = []
+        slabs_top = []
+        terms_top = []
+        talks_new = []
+        links_top = []
+        artists_hot = self.datum('posts').get_top_artists()
+
         if self.input('_pjax', None) == '#shell-index-posts':
             self.render('shell/index/posts.html', user = user, pager = pager, posts = posts)
             return
 
-        self.render('shell/index.html', user = user, pager = pager, posts = posts)
+        self.render('shell/index.html', user=user, pager=pager, posts=posts, posts_top=posts_top, artists_hot=artists_hot,
+                    posts_new=posts_new, posts_rel=posts_rel
+                    , slabs_top=slabs_top, terms_top=terms_top, talks_new=talks_new, links_top=links_top)

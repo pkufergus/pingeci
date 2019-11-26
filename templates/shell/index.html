@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="{{ handler.asset('src/nprogress.min.css') }}">
 <style>
     .lines {
-        padding: 16px;
+        padding: 6px;
     }
 
     .title {
@@ -17,7 +17,7 @@
 
 {% block main %}
 <div class="row">
-    <div class="span3 offset1">
+    <div class="span1 offset1">
         {% module Template("shell/_side.html", user = user) %}
     </div>
     <div class="span6">
@@ -25,6 +25,7 @@
             {% module Template("shell/index/posts.html", pager = pager, posts = posts) %}
         </div>
     </div>
+    {% include "../_side.html" %}
 </div>
 {% end %}
 
