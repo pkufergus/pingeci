@@ -1,6 +1,7 @@
 # -*- coding: UTF-8 -*-
 
 from basic import BasicCtrl
+from service.searchservice import SearchSrv
 
 class PostsCtrl(BasicCtrl):
     def get(self, _tnm = None):
@@ -30,13 +31,14 @@ class PostsCtrl(BasicCtrl):
         links_top = []
 
         if _qry:
+            posts = self.datum('posts').search(_qry)
             pass
         else:
             posts = self.datum('posts').get_top_songs()
             if self.input('page', None) is None:
                 _top = True
 
-            artists_hot = self.datum('posts').get_top_artists()
+        artists_hot = self.datum('posts').get_top_artists()
 
 
         self.render('posts.html', track=track, pager=pager, posts=posts, psers=psers, ptids=ptids, ptags=ptags

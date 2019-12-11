@@ -34,7 +34,7 @@ class SearchSrv():
             #highlight
             song.highlight(q)
             songs.append(song)
-            if len(songs) > 20:
+            if len(songs) > 30:
                 break
 
             # print("song={}".format(song.to_dict()))

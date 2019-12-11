@@ -3,6 +3,7 @@
 from lib.datum import Datum
 from model import dbops
 import re
+from service.searchservice import SearchSrv
 
 class PostsDatum(Datum):
     def get_post_by_id(self, post_id):
@@ -41,3 +42,16 @@ class PostsDatum(Datum):
             ret["artist_name"] = ar.name
             rets.append(ret)
         return rets
+
+    def search(self, q):
+        songs = SearchSrv().do(q)
+        posts = []
+        for song in songs:
+            post = {}
+            post["post_id"] = song.id
+            post["post_title"] = song.name
+            hl = song.lyric_highlight
+
+            post["post_summary"] = hl[:200] + "..."
+            posts.append(post)
+        return posts

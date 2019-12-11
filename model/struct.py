@@ -175,5 +175,5 @@ class Music():
         y = p2.sub(" ", self.lyric_highlight)
         # print("hl2={}".format(y))
         # print("q={}".format(q))
-        self.lyric_highlight = y.replace("{}".format(q), "[hight_light_start]{}[hight_light_end]".format(q))
+        self.lyric_highlight = y.replace("{}".format(q), "<code>{}</code>".format(q))
         print("hl3={}".format(self.lyric_highlight))
