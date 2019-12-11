@@ -51,7 +51,13 @@ class PostsDatum(Datum):
             post["post_id"] = song.id
             post["post_title"] = song.name
             hl = song.lyric_highlight
+            pos = 200
+            pattern = "<code>{}</code>".format(q)
+            size = len(pattern)
+            sp = "code>"
+            while pos < len(hl) and (hl[pos - 10:pos].find(sp) > 0 or hl[pos - 10:pos + 10].find(sp)> 0):
+                pos += 20
 
-            post["post_summary"] = hl[:200] + "..."
+            post["post_summary"] = hl[:pos] + "..."
             posts.append(post)
         return posts

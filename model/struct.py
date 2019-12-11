@@ -177,3 +177,4 @@ class Music():
         # print("q={}".format(q))
         self.lyric_highlight = y.replace("{}".format(q), "<code>{}</code>".format(q))
         print("hl3={}".format(self.lyric_highlight))
+        return len("<code>{}</code>".format(q))
