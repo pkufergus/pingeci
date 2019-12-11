@@ -17,13 +17,15 @@ class Shell_IndexCtrl(ShellCtrl):
             self.flash(0, {'sta': 404})
             return
 
-        songs = dbops.get_artist_songs_from_ids(user["post_ids"], limit=50)
+        songs = dbops.get_artist_songs_from_ids(user["post_ids"], limit=60)
         posts = []
         for song in songs:
             post = {}
             post["post_id"] = song.id
             post["post_title"] = song.name
             song.lyric = re.sub(r'\[[0-9:.]*\]', "", song.lyric)
+            if len(song.lyric) < 20:
+                continue
             if len(song.lyric) > 10:
                 post["post_descr"] = song.lyric[:120] + "..."
             else:
